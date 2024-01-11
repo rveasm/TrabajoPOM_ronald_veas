@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -99,18 +98,22 @@ public class ClaseBase {
         driver.quit();
     }
 
+    public String obtenerUrl(){
+        return driver.getCurrentUrl();
+    }
+
     public List<WebElement> buscarElementosWeb(By localizador){
         return driver.findElements(localizador);
     }
 
     public WebElement esperarPresenciaWebElement(By localizador){
-        wait = new WebDriverWait(driver,15);
+        wait = new WebDriverWait(driver,20);
         WebElement elementoEsperado = wait.until(ExpectedConditions.presenceOfElementLocated(localizador));
         return elementoEsperado;
     }
 
     public WebElement esperarPorElementoAClickear(By localizador){
-        wait = new WebDriverWait(driver,15);
+        wait = new WebDriverWait(driver,20);
         WebElement elementoEsperado = wait.until(ExpectedConditions.elementToBeClickable(localizador));
         return elementoEsperado;
     }

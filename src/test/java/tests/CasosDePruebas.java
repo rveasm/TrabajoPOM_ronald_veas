@@ -5,10 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
-import pages.BuscarWikipedia;
-import pages.CompraDemoblade;
-import pages.HomePCFactory;
-import pages.SeguimintoPCFactory;
+import pages.*;
 import utils.DataDriven;
 import utils.PropertiesManager;
 
@@ -19,6 +16,8 @@ public class CasosDePruebas {
     private HomePCFactory homePCFactory;
     private SeguimintoPCFactory seguimintoPCFactory;
     private BuscarWikipedia buscarWikipedia;
+    private ResultadoWikipedia resultadoWikipedia;
+    private HomeCondorito homeCondorito;
     private CompraDemoblade compraDemoblade;
     private String browser = PropertiesManager.obtenerProperty("browser");
     private String propertyDriven = PropertiesManager.obtenerProperty("propertyDriver");
@@ -35,7 +34,9 @@ public class CasosDePruebas {
         homePCFactory.manejoEsperasElementosWeb(10);
         seguimintoPCFactory = new SeguimintoPCFactory(homePCFactory.getDriver());
         buscarWikipedia = new BuscarWikipedia(homePCFactory.getDriver());
-        compraDemoblade =new CompraDemoblade(homePCFactory.getDriver());
+        resultadoWikipedia = new ResultadoWikipedia(homePCFactory.getDriver());
+        homeCondorito = new HomeCondorito(homePCFactory.getDriver());
+        compraDemoblade = new CompraDemoblade(homePCFactory.getDriver());
         homePCFactory.cargarURL("https://www.pcfactory.cl/");
         homePCFactory.maximizarBrowser();
     }
@@ -47,21 +48,25 @@ public class CasosDePruebas {
     }
     @Test
     public void CP002_seguimiento_fallido(){
-        datosPrueba = DataDriven.prepararData("CP002_seguimiento_fallid");
+        datosPrueba = DataDriven.prepararData("CP002_seguimiento_fallido");
         homePCFactory.irASeguimiento();
-        seguimintoPCFactory.seguirDespacho("17581848-0","8768928433");
+        seguimintoPCFactory.seguirDespacho(datosPrueba.get(1),datosPrueba.get(2));
+        Assertions.assertNotEquals(datosPrueba.get(3),seguimintoPCFactory.encontrarMsgDepacho());
     }
     @Test
     public void CP003_inicio_de_sesion(){
         datosPrueba = DataDriven.prepararData("CP003_inicio_de_sesion");
         homePCFactory.irAMiCuentaExitosa(datosPrueba.get(1),datosPrueba.get(2));
+        Assertions.assertEquals(datosPrueba.get(3),homePCFactory.obtenerUrl());
     }
     @Test
     public void CP004_busqueda_wikipedia(){
         datosPrueba = DataDriven.prepararData("CP004_busqueda_wikipedia");
         homePCFactory.cargarURL("https://www.wikipedia.org/");
-        buscarWikipedia.realizarBusqueda(datosPrueba.get(1));
-        Assertions.assertNotEquals(driver.getCurrentUrl(),"https://www.condorito.cl");
+        buscarWikipedia.realizarBusquedaP1(datosPrueba.get(1));
+        resultadoWikipedia.realizarBusquedaP2();
+        homeCondorito.clickImagenCodorito();
+        Assertions.assertEquals(datosPrueba.get(2),homeCondorito.obtenerUrl());
     }
     @Test
     public void CP005_compra_web(){
@@ -74,6 +79,6 @@ public class CasosDePruebas {
 
     @AfterEach
     public void posCondiciones(){
-        driver.quit();
+        homePCFactory.cerrarBrowser();
     }
 }

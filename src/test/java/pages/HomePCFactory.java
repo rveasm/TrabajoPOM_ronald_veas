@@ -12,7 +12,7 @@ public class HomePCFactory extends ClaseBase {
     By localizadorBtnIniciarSesion = By.id("btn_login_uno");
     By localizadorBtnSeguimiento = By.xpath("//a[contains(text(),'Seguir mi pedido')]");
     By LocalizadorBtnNombre = By.xpath("//span[contains(text(),'Hola Cesar Pililla!')]");
-    By localizadorBtnDatos = By.xpath("//body/div[@id='app']/div[1]/div[5]/div[3]/div[1]/div[1]/div[3]/div[1]/a[1]");
+    By localizadorLinkDatos = By.xpath("//body/div[@id='app']/div[1]/div[5]/div[3]/div[1]/div[1]/div[3]/div[1]/a[1]");
     By localizadorMensajeRutIncorrecto = By.xpath("//div[contains(text(),'Por favor, vuelve a intentarlo nuevamente.')]");
 
 
@@ -35,7 +35,7 @@ public class HomePCFactory extends ClaseBase {
         agregarTexto(esperarPresenciaWebElement(localizadorTxtPassword),password);
         click(esperarPorElementoAClickear(localizadorBtnIniciarSesion));
         click(esperarPorElementoAClickear(LocalizadorBtnNombre));
-        click(esperarPorElementoAClickear(localizadorBtnDatos));
+        click(esperarPorElementoAClickear(localizadorLinkDatos));
     }
     public String mensajeRutIncorecto() {
         return obtenerAtributoAriaLabel(localizadorMensajeRutIncorrecto);
